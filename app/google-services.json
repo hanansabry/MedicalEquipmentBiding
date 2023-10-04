@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "916109627283",
+    "project_id": "medical-equipment-biding",
+    "storage_bucket": "medical-equipment-biding.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916109627283:android:269556bc68edb0c0a06266",
+        "android_client_info": {
+          "package_name": "com.app.medicalequipmentbiding"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe34rAdnsV4RFVtTjoe0Iy4mg_k8gvL9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
