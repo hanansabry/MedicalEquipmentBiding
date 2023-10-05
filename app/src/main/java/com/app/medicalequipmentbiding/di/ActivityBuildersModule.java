@@ -2,9 +2,12 @@ package com.app.medicalequipmentbiding.di;
 
 
 
+import com.app.medicalequipmentbiding.di.modules.AuthenticationViewModelModule;
 import com.app.medicalequipmentbiding.presentation.BaseActivity;
+import com.app.medicalequipmentbiding.presentation.MainActivity;
 import com.app.medicalequipmentbiding.presentation.SplashActivity;
 import com.app.medicalequipmentbiding.di.modules.BaseViewModelModule;
+import com.app.medicalequipmentbiding.presentation.authentication.LoginActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -17,5 +20,11 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector
     abstract SplashActivity contributeSplashActivity();
+
+    @ContributesAndroidInjector
+    abstract MainActivity contributeMainActivity();
+
+    @ContributesAndroidInjector(modules = AuthenticationViewModelModule.class)
+    abstract LoginActivity contributeLoginActivity();
 
 }
