@@ -24,6 +24,7 @@ public class SessionManager {
 //    private static final long SESSION_TIMEOUT_DURATION_MS = 30 * 24 * 60 * 60 * 1000; //1 day
     private static final String KEY_TOKEN = "token";
     private static final String KEY_USER_ID = "user_id";
+    private static final String KEY_ACCOUNT = "account_type";
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -37,13 +38,12 @@ public class SessionManager {
     }
 
     //Create login session
-    public void createLoginSession(double userId, String firebaseId, String name, String email, int role) {
-        editor.putFloat(KEY_USER_ID, (float) userId);
+    public void createLoginSession(String firebaseId, String name, String email, String accountType) {
         editor.putString(KEY_ID, firebaseId);
         editor.putBoolean(IS_LOGIN, true);
         editor.putString(KEY_NAME, name);
         editor.putString(KEY_EMAIL, email);
-        editor.putInt(KEY_ROLE, role);
+        editor.putString(KEY_ACCOUNT, accountType);
         editor.putLong(KEY_START_SESSION_TIME, System.currentTimeMillis());
         editor.apply();
     }
@@ -114,6 +114,10 @@ public class SessionManager {
         System.out.println(token);
         editor.putString(KEY_TOKEN, token);
         editor.apply();
+    }
+
+    public String getAccountType() {
+        return sharedPreferences.getString(KEY_ACCOUNT, null);
     }
 
     public String getToken() {

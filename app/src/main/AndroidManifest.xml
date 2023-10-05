@@ -15,11 +15,20 @@
         android:theme="@style/FullScreenAppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.vendor.ActiveBidingListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.client.ClientBidingListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".presentation.authentication.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".presentation.authentication.LoginActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.MainActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".presentation.SplashActivity"
             android:exported="true"

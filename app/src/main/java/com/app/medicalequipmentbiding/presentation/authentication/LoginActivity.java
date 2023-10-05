@@ -1,5 +1,6 @@
 package com.app.medicalequipmentbiding.presentation.authentication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -8,6 +9,8 @@ import com.app.medicalequipmentbiding.R;
 import com.app.medicalequipmentbiding.databinding.ActivityLoginBinding;
 import com.app.medicalequipmentbiding.di.ViewModelProviderFactory;
 import com.app.medicalequipmentbiding.presentation.BaseActivity;
+import com.app.medicalequipmentbiding.presentation.client.ClientBidingListActivity;
+import com.app.medicalequipmentbiding.presentation.vendor.ActiveBidingListActivity;
 import com.app.medicalequipmentbiding.utils.Constants;
 
 import javax.inject.Inject;
@@ -38,6 +41,8 @@ public class LoginActivity extends BaseActivity {
             binding.loginButton.setVisibility(View.VISIBLE);
             if (client != null) {
                 Toast.makeText(this, "Login as client successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, ClientBidingListActivity.class));
+                sessionManager.createLoginSession(client.getUserId(), client.getOrganization(), client.getEmail(), Constants.CLIENT);
             }
         });
         authenticationViewModel.getVendorLiveData().observe(this, vendor -> {
@@ -45,6 +50,8 @@ public class LoginActivity extends BaseActivity {
             binding.loginButton.setVisibility(View.VISIBLE);
             if (vendor != null) {
                 Toast.makeText(this, "Login as vendor successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, ActiveBidingListActivity.class));
+                sessionManager.createLoginSession(vendor.getUserId(), vendor.getOrganization(), vendor.getEmail(), Constants.VENDOR);
             }
         });
         authenticationViewModel.getErrorState().observe(this, error -> {
@@ -67,7 +74,7 @@ public class LoginActivity extends BaseActivity {
         String password = binding.passwordEditText.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "You must enter email and password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.email_password_required, Toast.LENGTH_SHORT).show();
             return;
         }
 

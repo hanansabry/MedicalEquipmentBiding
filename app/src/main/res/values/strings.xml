@@ -10,4 +10,17 @@
     <string name="login">Login</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="organization_name">Organization Name</string>
+    <string name="re_password">Re-Password</string>
+    <string name="phone">Phone</string>
+    <string name="approve_number">Approve Number</string>
+    <string name="account_type">Account Type</string>
+    <string name="client">Client</string>
+    <string name="vendor">Vendor</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="all_fields_required">All fields are required</string>
+    <string name="password_not_match_error">Password and Re-Password do not match</string>
+    <string name="address">Address</string>
+    <string name="email_password_required">You must enter email and password</string>
 </resources>

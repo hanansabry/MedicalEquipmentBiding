@@ -9,6 +9,7 @@ import android.view.View;
 import com.app.medicalequipmentbiding.R;
 import com.app.medicalequipmentbiding.databinding.ActivityMainBinding;
 import com.app.medicalequipmentbiding.presentation.authentication.LoginActivity;
+import com.app.medicalequipmentbiding.presentation.authentication.RegisterActivity;
 import com.app.medicalequipmentbiding.utils.Constants;
 
 public class MainActivity extends BaseActivity {
@@ -37,5 +38,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public void onRegisterNowClicked(View view) {
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 }
