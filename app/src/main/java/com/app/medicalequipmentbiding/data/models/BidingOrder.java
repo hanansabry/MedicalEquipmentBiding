@@ -1,17 +1,18 @@
 package com.app.medicalequipmentbiding.data.models;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class BidingOrder {
 
     private String orderId;
     private String clientId;
     private String title;
-    private String startDate;
-    private String closeDate;
+    private long startDate;
+    private long closeDate;
     private boolean isDelivery;
     private String status;
-    private HashMap<String, Equipment> orderItems;
+    private List<Equipment> orderItems;
 
     public String getOrderId() {
         return orderId;
@@ -37,19 +38,19 @@ public class BidingOrder {
         this.title = title;
     }
 
-    public String getStartDate() {
+    public long getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(long startDate) {
         this.startDate = startDate;
     }
 
-    public String getCloseDate() {
+    public long getCloseDate() {
         return closeDate;
     }
 
-    public void setCloseDate(String closeDate) {
+    public void setCloseDate(long closeDate) {
         this.closeDate = closeDate;
     }
 
@@ -69,11 +70,15 @@ public class BidingOrder {
         this.status = status;
     }
 
-    public HashMap<String, Equipment> getOrderItems() {
+    public List<Equipment> getOrderItems() {
         return orderItems;
     }
 
-    public void setOrderItems(HashMap<String, Equipment> orderItems) {
+    public void setOrderItems(List<Equipment> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public enum OrderStatus {
+        NEW, CLOSED, ON_DELIVERY;
     }
 }

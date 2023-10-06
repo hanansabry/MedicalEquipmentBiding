@@ -1,18 +1,20 @@
 package com.app.medicalequipmentbiding.datasource;
 
-import com.app.medicalequipmentbiding.data.DatabaseRepository;
+import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Client;
+import com.app.medicalequipmentbiding.data.models.MedicalType;
 import com.app.medicalequipmentbiding.data.models.Vendor;
 import com.app.medicalequipmentbiding.utils.Constants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -141,6 +143,55 @@ public class FirebaseDataSource {
                             emitter.onError(task.getException());
                         }
                     });
+        });
+    }
+
+    public Single<List<MedicalType>> retrieveMedicalEquipmentTypes() {
+        return Single.create(emitter -> {
+            firebaseDatabase.getReference(Constants.TYPES_NODE).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<MedicalType> types = new ArrayList<>();
+                    for (DataSnapshot typeSnapshot : snapshot.getChildren()) {
+                        String name = typeSnapshot.child("name").getValue().toString();
+                        List<String> items = new ArrayList<>();
+                        if (typeSnapshot.hasChild("items")) {
+                            for (DataSnapshot itemSnapshot : typeSnapshot.child("items").getChildren()) {
+                                if (itemSnapshot.hasChild("name")) {
+                                    items.add(itemSnapshot.child("name").getValue().toString());
+                                }
+                            }
+                        }
+                        MedicalType type = new MedicalType();
+                        type.setTypeId(typeSnapshot.getKey());
+                        type.setName(name);
+                        type.setItems(items);
+                        types.add(type);
+                    }
+                    emitter.onSuccess(types);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        });
+    }
+
+    public Single<Boolean> addNewOrder(BidingOrder bidingOrder) {
+        return Single.create(emitter -> {
+            firebaseDatabase.getReference(Constants.ORDERS_NODE)
+                    .push()
+                    .setValue(bidingOrder)
+                    .addOnCompleteListener(saveTask -> {
+                        if (saveTask.isSuccessful()) {
+                            emitter.onSuccess(true);
+                        } else {
+                            emitter.onError(saveTask.getException());
+                        }
+                    });
+
         });
     }
 }

@@ -23,4 +23,22 @@
     <string name="password_not_match_error">Password and Re-Password do not match</string>
     <string name="address">Address</string>
     <string name="email_password_required">You must enter email and password</string>
+    <string name="biding_list">Biding List</string>
+    <string name="new_order">New Order</string>
+    <string name="save">Save</string>
+    <string name="duration">Duration</string>
+    <string name="date">Date</string>
+    <string name="delivery">Delivery</string>
+    <string name="add_equipment_item">Add Equipment Item</string>
+    <string name="quantity">Quantity</string>
+    <string name="notes">Notes</string>
+    <string name="select_type">Select Type</string>
+    <string name="select_item">Select Item</string>
+
+    <array name="item_status">
+        <item>Item Status</item>
+        <item>New</item>
+        <item>Like New</item>
+        <item>Used</item>
+    </array>
 </resources>

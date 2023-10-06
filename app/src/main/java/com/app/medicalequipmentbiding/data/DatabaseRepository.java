@@ -1,8 +1,12 @@
 package com.app.medicalequipmentbiding.data;
 
+import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Client;
+import com.app.medicalequipmentbiding.data.models.MedicalType;
 import com.app.medicalequipmentbiding.data.models.Vendor;
 import com.app.medicalequipmentbiding.datasource.FirebaseDataSource;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -32,5 +36,13 @@ public class DatabaseRepository {
 
     public Single<Vendor> registerVendor(Vendor vendor) {
         return firebaseDataSource.registerVendor(vendor);
+    }
+
+    public Single<List<MedicalType>> retrieveMedicalEquipmentTypes() {
+        return firebaseDataSource.retrieveMedicalEquipmentTypes();
+    }
+
+    public Single<Boolean> addNewOrder(BidingOrder bidingOrder) {
+        return firebaseDataSource.addNewOrder(bidingOrder);
     }
 }
