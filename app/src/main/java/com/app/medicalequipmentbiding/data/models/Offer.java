@@ -1,13 +1,16 @@
 package com.app.medicalequipmentbiding.data.models;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Offer {
 
     private String offerId;
     private String orderId;
     private String vendorId;
-    private HashMap<String, EquipmentOffer> itemsOffers;
+    private String vendorName;
+    private double vendorRank;
+    private List<EquipmentOffer> itemsOffers;
 
     public String getOfferId() {
         return offerId;
@@ -33,11 +36,27 @@ public class Offer {
         this.vendorId = vendorId;
     }
 
-    public HashMap<String, EquipmentOffer> getItemsOffers() {
+    public String getVendorName() {
+        return vendorName;
+    }
+
+    public void setVendorName(String vendorName) {
+        this.vendorName = vendorName;
+    }
+
+    public double getVendorRank() {
+        return vendorRank;
+    }
+
+    public void setVendorRank(double vendorRank) {
+        this.vendorRank = vendorRank;
+    }
+
+    public List<EquipmentOffer> getItemsOffers() {
         return itemsOffers;
     }
 
-    public void setItemsOffers(HashMap<String, EquipmentOffer> itemsOffers) {
+    public void setItemsOffers(List<EquipmentOffer> itemsOffers) {
         this.itemsOffers = itemsOffers;
     }
 }

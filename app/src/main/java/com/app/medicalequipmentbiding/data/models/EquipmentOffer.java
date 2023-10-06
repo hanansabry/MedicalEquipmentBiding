@@ -18,6 +18,14 @@ public class EquipmentOffer {
         this.itemId = itemId;
     }
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
     public String getType() {
         return type;
     }

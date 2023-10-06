@@ -4,6 +4,10 @@ import android.widget.TextView;
 
 import com.app.medicalequipmentbiding.R;
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
+import com.app.medicalequipmentbiding.data.models.Equipment;
+import com.app.medicalequipmentbiding.data.models.EquipmentOffer;
+
+import java.util.List;
 
 import androidx.databinding.BindingAdapter;
 
@@ -41,6 +45,19 @@ public class BindingAdaptersUtils {
             textView.setText("Delivery");
         } else {
             textView.setText("No Delivery");
+        }
+    }
+
+    @BindingAdapter("offerPrice")
+    public static void bindOfferPrice(TextView textView, List<EquipmentOffer> items) {
+        if (items != null && !items.isEmpty()) {
+            double total = 0;
+            for (EquipmentOffer equipmentOffer : items) {
+                total += equipmentOffer.getTotalPrice();
+            }
+            textView.setText(String.format("%s $", total));
+        } else {
+            textView.setText("0 $");
         }
     }
 

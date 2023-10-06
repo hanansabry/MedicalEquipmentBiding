@@ -156,5 +156,26 @@
             bind:delivery="@{order.delivery}"
             tools:text="@string/delivery" />
 
+        <TextView
+            android:id="@+id/offer_list_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/offer_list"
+            android:textColor="@color/tritary_gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/flow" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/offers_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:padding="16dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/offer_list_lbl"
+            tools:listitem="@layout/offer_item_layout" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -42,4 +42,7 @@
 
     <string name="select_item">Select Item</string>
     <string name="awarding">Awarding</string>
+    <string name="offer_price">Offer Price</string>
+    <string name="show_offer_details">Show Offer Details</string>
+    <string name="offer_list">Offer List</string>
 </resources>
