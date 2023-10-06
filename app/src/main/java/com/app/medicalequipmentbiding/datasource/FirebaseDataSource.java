@@ -2,7 +2,10 @@ package com.app.medicalequipmentbiding.datasource;
 
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Client;
+import com.app.medicalequipmentbiding.data.models.Equipment;
+import com.app.medicalequipmentbiding.data.models.EquipmentOffer;
 import com.app.medicalequipmentbiding.data.models.MedicalType;
+import com.app.medicalequipmentbiding.data.models.Offer;
 import com.app.medicalequipmentbiding.data.models.Vendor;
 import com.app.medicalequipmentbiding.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
@@ -242,6 +245,68 @@ public class FirebaseDataSource {
                             emitter.onError(error.toException());
                         }
                     });
+        });
+    }
+
+    public Single<List<Offer>> retrieveOrderOffers(String orderId) {
+        return Single.create(emitter -> {
+            EquipmentOffer itemOffer1 = new EquipmentOffer();
+            itemOffer1.setItem("Item Name");
+            itemOffer1.setType("Type Name");
+            itemOffer1.setQuantity(20);
+            itemOffer1.setState(Equipment.EquipmentState.NEW.state);
+            itemOffer1.setTotalPrice(2000);
+            EquipmentOffer itemOffer2 = new EquipmentOffer();
+            itemOffer2.setItem("Item Name");
+            itemOffer2.setType("Type Name");
+            itemOffer2.setQuantity(30);
+            itemOffer2.setState(Equipment.EquipmentState.NEW.state);
+            itemOffer2.setTotalPrice(5000);
+            List<EquipmentOffer> itemOffers = new ArrayList<>();
+            itemOffers.add(itemOffer1);
+            itemOffers.add(itemOffer2);
+
+            Offer offer = new Offer();
+            offer.setVendorName("ABC Organization");
+            offer.setVendorRank(3);
+            offer.setItemsOffers(itemOffers);
+
+            Offer offer2 = new Offer();
+            offer2.setVendorName("DEFG Organization");
+            offer2.setVendorRank(2);
+            offer2.setItemsOffers(itemOffers);
+
+            List<Offer> offerList = new ArrayList<>();
+            offerList.add(offer);
+            offerList.add(offer2);
+            emitter.onSuccess(offerList);
+        });
+    }
+
+
+    public Single<Offer> retrieveOfferDetails(String offerId) {
+        return Single.create(emitter -> {
+            EquipmentOffer itemOffer1 = new EquipmentOffer();
+            itemOffer1.setItem("Item Name");
+            itemOffer1.setType("Type Name");
+            itemOffer1.setQuantity(20);
+            itemOffer1.setState(Equipment.EquipmentState.NEW.state);
+            itemOffer1.setTotalPrice(2000);
+            EquipmentOffer itemOffer2 = new EquipmentOffer();
+            itemOffer2.setItem("Item Name");
+            itemOffer2.setType("Type Name");
+            itemOffer2.setQuantity(30);
+            itemOffer2.setState(Equipment.EquipmentState.NEW.state);
+            itemOffer2.setTotalPrice(5000);
+            List<EquipmentOffer> itemOffers = new ArrayList<>();
+            itemOffers.add(itemOffer1);
+            itemOffers.add(itemOffer2);
+
+            Offer offer = new Offer();
+            offer.setVendorName("ABC Organization");
+            offer.setVendorRank(3);
+            offer.setItemsOffers(itemOffers);
+            emitter.onSuccess(offer);
         });
     }
 }

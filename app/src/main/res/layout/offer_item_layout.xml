@@ -6,6 +6,9 @@
 
     <data>
         <variable
+            name="position"
+            type="Integer" />
+        <variable
             name="offer"
             type="com.app.medicalequipmentbiding.data.models.Offer" />
 
@@ -18,14 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        android:onClick="@{() -> callback.onOfferClicked(offer, position)}"
         app:cardCornerRadius="4dp"
-        app:cardElevation="0dp">
+        app:cardElevation="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp"
-            android:background="@color/transparent_gray_2">
+            android:padding="16dp">
 
             <TextView
                 android:id="@+id/vendor_name"

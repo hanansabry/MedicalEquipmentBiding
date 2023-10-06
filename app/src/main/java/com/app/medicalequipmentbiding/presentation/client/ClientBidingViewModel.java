@@ -3,6 +3,7 @@ package com.app.medicalequipmentbiding.presentation.client;
 import com.app.medicalequipmentbiding.data.DatabaseRepository;
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.MedicalType;
+import com.app.medicalequipmentbiding.data.models.Offer;
 import com.app.medicalequipmentbiding.presentation.BaseViewModel;
 
 import java.util.List;
@@ -19,8 +20,10 @@ public class ClientBidingViewModel extends BaseViewModel {
 
     private final MutableLiveData<List<MedicalType>> typesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<BidingOrder>> ordersLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<Offer>> orderOffersLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> addOrderStateLiveData = new MutableLiveData<>();
     private final MutableLiveData<BidingOrder> bidingOrderLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Offer> offerDetailsLiveData = new MutableLiveData<>();
 
     @Inject
     public ClientBidingViewModel(DatabaseRepository databaseRepository) {
@@ -115,6 +118,50 @@ public class ClientBidingViewModel extends BaseViewModel {
                 });
     }
 
+    public void retrieveOrderOffers(String orderId) {
+        databaseRepository.retrieveOrderOffers(orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<Offer>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(List<Offer> offers) {
+                        orderOffersLiveData.setValue(offers);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorState.setValue(e.getMessage());
+                    }
+                });
+    }
+
+    public void retrieveOfferDetails(String offerId) {
+        databaseRepository.retrieveOfferDetails(offerId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Offer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(Offer offer) {
+                        offerDetailsLiveData.setValue(offer);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorState.setValue(e.getMessage());
+                    }
+                });
+    }
+
     public MutableLiveData<List<MedicalType>> getTypesLiveData() {
         return typesLiveData;
     }
@@ -129,5 +176,13 @@ public class ClientBidingViewModel extends BaseViewModel {
 
     public MutableLiveData<BidingOrder> getBidingOrderLiveData() {
         return bidingOrderLiveData;
+    }
+
+    public MutableLiveData<List<Offer>> getOrderOffersLiveData() {
+        return orderOffersLiveData;
+    }
+
+    public MutableLiveData<Offer> getOfferDetailsLiveData() {
+        return offerDetailsLiveData;
     }
 }

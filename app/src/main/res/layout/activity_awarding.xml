@@ -171,11 +171,26 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:padding="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="64dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/offer_list_lbl"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/offer_item_layout" />
+
+        <Button
+            android:id="@+id/select_offer_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/select_offer"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:onClick="onSelectOfferClicked"
+            android:background="@drawable/cornered_primary_bg"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

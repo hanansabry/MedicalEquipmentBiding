@@ -3,6 +3,7 @@ package com.app.medicalequipmentbiding.data;
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Client;
 import com.app.medicalequipmentbiding.data.models.MedicalType;
+import com.app.medicalequipmentbiding.data.models.Offer;
 import com.app.medicalequipmentbiding.data.models.Vendor;
 import com.app.medicalequipmentbiding.datasource.FirebaseDataSource;
 
@@ -52,5 +53,13 @@ public class DatabaseRepository {
 
     public Single<BidingOrder> retrieveOrderDetails(String orderId) {
         return firebaseDataSource.retrieveOrderDetails(orderId);
+    }
+
+    public Single<List<Offer>> retrieveOrderOffers(String orderId) {
+        return firebaseDataSource.retrieveOrderOffers(orderId);
+    }
+
+    public Single<Offer> retrieveOfferDetails(String offerId) {
+        return firebaseDataSource.retrieveOfferDetails(offerId);
     }
 }
