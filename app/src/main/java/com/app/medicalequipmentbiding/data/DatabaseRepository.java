@@ -62,4 +62,8 @@ public class DatabaseRepository {
     public Single<Offer> retrieveOfferDetails(String offerId) {
         return firebaseDataSource.retrieveOfferDetails(offerId);
     }
+
+    public Single<List<BidingOrder>> retrieveActiveBiding() {
+        return firebaseDataSource.retrieveActiveBiding();
+    }
 }

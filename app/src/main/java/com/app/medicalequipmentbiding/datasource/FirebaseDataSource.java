@@ -309,4 +309,29 @@ public class FirebaseDataSource {
             emitter.onSuccess(offer);
         });
     }
+
+    public Single<List<BidingOrder>> retrieveActiveBiding() {
+        return Single.create(emitter -> {
+            firebaseDatabase.getReference(Constants.ORDERS_NODE)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            ArrayList<BidingOrder> orders = new ArrayList<>();
+                            for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                                BidingOrder order = orderSnapshot.getValue(BidingOrder.class);
+                                if (order != null && order.getCloseDate() > System.currentTimeMillis()) {
+                                    order.setOrderId(orderSnapshot.getKey());
+                                    orders.add(order);
+                                }
+                            }
+                            emitter.onSuccess(orders);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            emitter.onError(error.toException());
+                        }
+                    });
+        });
+    }
 }

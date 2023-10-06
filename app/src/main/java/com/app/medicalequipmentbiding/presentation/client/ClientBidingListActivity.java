@@ -13,7 +13,9 @@ import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.databinding.ActivityClientBidingListBinding;
 import com.app.medicalequipmentbiding.di.ViewModelProviderFactory;
 import com.app.medicalequipmentbiding.presentation.BaseActivity;
+import com.app.medicalequipmentbiding.presentation.MainActivity;
 import com.app.medicalequipmentbiding.utils.Constants;
+import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
 
@@ -54,6 +56,14 @@ public class ClientBidingListActivity extends BaseActivity implements BidingList
     public void onBidingOrderClicked(BidingOrder bidingOrder) {
         Intent intent = new Intent(this, AwardingActivity.class);
         intent.putExtra(Constants.ORDER_ID, bidingOrder.getOrderId());
+        startActivity(intent);
+    }
+
+    public void onLogoutClicked(View view) {
+        FirebaseAuth.getInstance().signOut();
+        sessionManager.logoutUser();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }

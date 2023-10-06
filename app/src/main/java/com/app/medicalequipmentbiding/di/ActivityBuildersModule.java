@@ -4,6 +4,7 @@ package com.app.medicalequipmentbiding.di;
 
 import com.app.medicalequipmentbiding.di.modules.AuthenticationViewModelModule;
 import com.app.medicalequipmentbiding.di.modules.ClientBidingViewModelModule;
+import com.app.medicalequipmentbiding.di.modules.VendorViewModelModule;
 import com.app.medicalequipmentbiding.presentation.BaseActivity;
 import com.app.medicalequipmentbiding.presentation.MainActivity;
 import com.app.medicalequipmentbiding.presentation.SplashActivity;
@@ -40,7 +41,7 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector(modules = ClientBidingViewModelModule.class)
     abstract ClientBidingListActivity contributeClientBidingListActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = VendorViewModelModule.class)
     abstract ActiveBidingListActivity contributeActiveBidingListActivity();
 
     @ContributesAndroidInjector(modules = ClientBidingViewModelModule.class)

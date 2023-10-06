@@ -45,6 +45,17 @@
                     android:text="@string/biding_list"
                     android:textFontWeight="700"/>
 
+                <ImageButton
+                    android:id="@+id/logout_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="end"
+                    android:layout_margin="8dp"
+                    android:background="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_logout"
+                    android:onClick="onLogoutClicked" />
+
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
