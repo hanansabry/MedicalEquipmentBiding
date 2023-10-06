@@ -20,6 +20,7 @@ public class ClientBidingViewModel extends BaseViewModel {
     private final MutableLiveData<List<MedicalType>> typesLiveData = new MutableLiveData<>();
     private final MutableLiveData<List<BidingOrder>> ordersLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> addOrderStateLiveData = new MutableLiveData<>();
+    private final MutableLiveData<BidingOrder> bidingOrderLiveData = new MutableLiveData<>();
 
     @Inject
     public ClientBidingViewModel(DatabaseRepository databaseRepository) {
@@ -92,6 +93,28 @@ public class ClientBidingViewModel extends BaseViewModel {
                 });
     }
 
+    public void retrieveOrderDetails(String orderId) {
+        databaseRepository.retrieveOrderDetails(orderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<BidingOrder>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(BidingOrder order) {
+                        bidingOrderLiveData.setValue(order);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorState.setValue(e.getMessage());
+                    }
+                });
+    }
+
     public MutableLiveData<List<MedicalType>> getTypesLiveData() {
         return typesLiveData;
     }
@@ -102,5 +125,9 @@ public class ClientBidingViewModel extends BaseViewModel {
 
     public MutableLiveData<List<BidingOrder>> getOrdersLiveData() {
         return ordersLiveData;
+    }
+
+    public MutableLiveData<BidingOrder> getBidingOrderLiveData() {
+        return bidingOrderLiveData;
     }
 }

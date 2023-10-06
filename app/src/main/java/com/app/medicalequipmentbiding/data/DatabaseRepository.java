@@ -49,4 +49,8 @@ public class DatabaseRepository {
     public Single<List<BidingOrder>> retrieveClientBidingOrders(String clientId) {
         return firebaseDataSource.retrieveClientBidingOrders(clientId);
     }
+
+    public Single<BidingOrder> retrieveOrderDetails(String orderId) {
+        return firebaseDataSource.retrieveOrderDetails(orderId);
+    }
 }

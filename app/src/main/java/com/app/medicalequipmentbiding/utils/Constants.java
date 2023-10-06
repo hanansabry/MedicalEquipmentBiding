@@ -10,4 +10,5 @@ public class Constants {
     public static final String DATE_FORMAT = "dd MMM,yyyy";
     public static final String ORDERS_NODE = "orders";
     public static final String TYPES_NODE = "types";
+    public static final String ORDER_ID = "order_id";
 }

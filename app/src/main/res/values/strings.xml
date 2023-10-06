@@ -1,4 +1,10 @@
 <resources>
+    <array name="item_status">
+        <item>Item Status</item>
+        <item>New</item>
+        <item>Like New</item>
+        <item>Used</item>
+    </array>
     <string name="app_name">MedicalEquipmentBiding</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
@@ -33,12 +39,7 @@
     <string name="quantity">Quantity</string>
     <string name="notes">Notes</string>
     <string name="select_type">Select Type</string>
-    <string name="select_item">Select Item</string>
 
-    <array name="item_status">
-        <item>Item Status</item>
-        <item>New</item>
-        <item>Like New</item>
-        <item>Used</item>
-    </array>
+    <string name="select_item">Select Item</string>
+    <string name="awarding">Awarding</string>
 </resources>

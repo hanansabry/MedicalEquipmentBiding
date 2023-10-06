@@ -14,7 +14,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -208,7 +207,10 @@ public class FirebaseDataSource {
                     ArrayList<BidingOrder> orders = new ArrayList<>();
                     for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                         BidingOrder order = orderSnapshot.getValue(BidingOrder.class);
-                        orders.add(order);
+                        if (order != null) {
+                            order.setOrderId(orderSnapshot.getKey());
+                            orders.add(order);
+                        }
                     }
                     emitter.onSuccess(orders);
                 }
@@ -218,6 +220,28 @@ public class FirebaseDataSource {
                     emitter.onError(error.toException());
                 }
             });
+        });
+    }
+
+    public Single<BidingOrder> retrieveOrderDetails(String orderId) {
+        return Single.create(emitter -> {
+            firebaseDatabase.getReference(Constants.ORDERS_NODE)
+                    .child(orderId)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            BidingOrder order = snapshot.getValue(BidingOrder.class);
+                            if (order != null) {
+                                order.setOrderId(snapshot.getKey());
+                                emitter.onSuccess(order);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            emitter.onError(error.toException());
+                        }
+                    });
         });
     }
 }

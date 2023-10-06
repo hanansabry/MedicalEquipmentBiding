@@ -16,6 +16,7 @@ public class BindingAdaptersUtils {
             textView.setBackgroundColor(textView.getContext().getColor(R.color.red));
         } else {
             textView.setText(status);
+            textView.setBackgroundColor(textView.getContext().getColor(R.color.colorPrimary));
         }
     }
 
@@ -25,6 +26,22 @@ public class BindingAdaptersUtils {
                 Utils.convertMillisecondsToDate(startDate, Constants.DATE_FORMAT),
                 Utils.convertMillisecondsToDate(closeDate, Constants.DATE_FORMAT))
         );
+    }
+
+    @BindingAdapter("date")
+    public static void bindDate(TextView textView, Long milliseconds) {
+        if (milliseconds != null) {
+            textView.setText(Utils.convertMillisecondsToDate(milliseconds, Constants.DATE_FORMAT));
+        }
+    }
+
+    @BindingAdapter("delivery")
+    public static void bindDelivery(TextView textView, boolean isDelivery) {
+        if (isDelivery) {
+            textView.setText("Delivery");
+        } else {
+            textView.setText("No Delivery");
+        }
     }
 
 }

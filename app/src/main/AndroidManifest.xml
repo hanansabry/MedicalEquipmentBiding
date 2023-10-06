@@ -15,6 +15,9 @@
         android:theme="@style/FullScreenAppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.client.AwardingActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".presentation.client.NewBidingOrderActivity"
             android:screenOrientation="portrait" />
         <activity
