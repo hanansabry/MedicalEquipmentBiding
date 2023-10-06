@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="order"
+            type="com.app.medicalequipmentbiding.data.models.BidingOrder" />
+
+        <variable
+            name="callback"
+            type="com.app.medicalequipmentbiding.presentation.client.BidingListAdapter.BidingListCallback" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:onClick="@{() -> callback.onBidingOrderClicked(order)}"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent_gray_2"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/order_icon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/medical_order_icon_2"
+                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@{order.title}"
+                android:textFontWeight="700"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/order_icon"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Order title" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintStart_toStartOf="@id/title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/tritary_gray"
+                bind:startDate="@{order.startDate}"
+                bind:closeDate="@{order.closeDate}"
+                tools:text="From 10 aug,2023 to 20 aug, 2023"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:paddingStart="16dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/title"
+                bind:closeDate="@{order.closeDate}"
+                bind:status="@{order.status}"
+                tools:text="New" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

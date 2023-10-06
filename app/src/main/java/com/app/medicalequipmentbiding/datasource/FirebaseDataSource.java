@@ -10,6 +10,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -173,7 +174,7 @@ public class FirebaseDataSource {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    emitter.onError(error.toException());
                 }
             });
         });
@@ -192,6 +193,31 @@ public class FirebaseDataSource {
                         }
                     });
 
+        });
+    }
+
+    public Single<List<BidingOrder>> retrieveClientBidingOrders(String clientId) {
+        return Single.create(emitter -> {
+            Query ordersQuery = firebaseDatabase.getReference(Constants.ORDERS_NODE)
+                    .orderByChild("clientId")
+                    .equalTo(clientId);
+
+            ordersQuery.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    ArrayList<BidingOrder> orders = new ArrayList<>();
+                    for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                        BidingOrder order = orderSnapshot.getValue(BidingOrder.class);
+                        orders.add(order);
+                    }
+                    emitter.onSuccess(orders);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    emitter.onError(error.toException());
+                }
+            });
         });
     }
 }

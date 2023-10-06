@@ -35,7 +35,7 @@ public abstract class ActivityBuildersModule {
     @ContributesAndroidInjector(modules = AuthenticationViewModelModule.class)
     abstract RegisterActivity contributeRegisterActivity();
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = ClientBidingViewModelModule.class)
     abstract ClientBidingListActivity contributeClientBidingListActivity();
 
     @ContributesAndroidInjector

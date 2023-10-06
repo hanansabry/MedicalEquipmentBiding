@@ -45,4 +45,8 @@ public class DatabaseRepository {
     public Single<Boolean> addNewOrder(BidingOrder bidingOrder) {
         return firebaseDataSource.addNewOrder(bidingOrder);
     }
+
+    public Single<List<BidingOrder>> retrieveClientBidingOrders(String clientId) {
+        return firebaseDataSource.retrieveClientBidingOrders(clientId);
+    }
 }

@@ -18,6 +18,7 @@ import io.reactivex.schedulers.Schedulers;
 public class ClientBidingViewModel extends BaseViewModel {
 
     private final MutableLiveData<List<MedicalType>> typesLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<BidingOrder>> ordersLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> addOrderStateLiveData = new MutableLiveData<>();
 
     @Inject
@@ -69,11 +70,37 @@ public class ClientBidingViewModel extends BaseViewModel {
                 });
     }
 
+    public void retrieveClientBidingOrders(String clientId) {
+        databaseRepository.retrieveClientBidingOrders(clientId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<BidingOrder>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(List<BidingOrder> orders) {
+                        ordersLiveData.setValue(orders);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorState.setValue(e.getMessage());
+                    }
+                });
+    }
+
     public MutableLiveData<List<MedicalType>> getTypesLiveData() {
         return typesLiveData;
     }
 
     public MutableLiveData<Boolean> getAddOrderStateLiveData() {
         return addOrderStateLiveData;
+    }
+
+    public MutableLiveData<List<BidingOrder>> getOrdersLiveData() {
+        return ordersLiveData;
     }
 }
