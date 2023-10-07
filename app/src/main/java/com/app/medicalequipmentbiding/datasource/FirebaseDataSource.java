@@ -265,7 +265,30 @@ public class FirebaseDataSource {
                             offerList.add(offer);
                         }
                     }
-                    emitter.onSuccess(offerList);
+
+                    //set vendors ranks
+                    List<Offer> offerListWithVendors = new ArrayList<>();
+                    for (Offer offer : offerList) {
+                        //get vendor rank
+                        firebaseDatabase.getReference(Constants.VENDORS_NODE)
+                                .child(offer.getVendorId())
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        Vendor vendor = snapshot.getValue(Vendor.class);
+                                        offer.setVendorRank(vendor.getRank());
+                                        offerListWithVendors.add(offer);
+                                        if (offerListWithVendors.size() == offerList.size()) {
+                                            emitter.onSuccess(offerListWithVendors);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                    }
                 }
 
                 @Override
@@ -286,7 +309,22 @@ public class FirebaseDataSource {
                             Offer offer = snapshot.getValue(Offer.class);
                             if (offer != null) {
                                 offer.setOfferId(snapshot.getKey());
-                                emitter.onSuccess(offer);
+                                //get vendor rank
+                                firebaseDatabase.getReference(Constants.VENDORS_NODE)
+                                        .child(offer.getVendorId())
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                Vendor vendor = snapshot.getValue(Vendor.class);
+                                                offer.setVendorRank(vendor.getRank());
+                                                emitter.onSuccess(offer);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
                             }
                         }
 
@@ -449,7 +487,7 @@ public class FirebaseDataSource {
                             Vendor vendor = snapshot.getValue(Vendor.class);
                             if (vendor != null) {
                                 int count = vendor.getRankCount() + 1;
-                                double rank = (vendor.getRank() + rankValue) / count;
+                                double rank = ((vendor.getRank() * vendor.getRankCount()) + rankValue) / count;
                                 HashMap<String, Object> updateValues = new HashMap<>();
                                 updateValues.put("rank", rank);
                                 updateValues.put("rankCount", count);
