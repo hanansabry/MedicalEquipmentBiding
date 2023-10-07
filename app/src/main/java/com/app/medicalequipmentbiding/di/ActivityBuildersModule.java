@@ -2,9 +2,12 @@ package com.app.medicalequipmentbiding.di;
 
 
 
+import com.app.medicalequipmentbiding.di.modules.AdminViewModelModule;
 import com.app.medicalequipmentbiding.di.modules.AuthenticationViewModelModule;
 import com.app.medicalequipmentbiding.di.modules.ClientBidingViewModelModule;
 import com.app.medicalequipmentbiding.di.modules.VendorViewModelModule;
+import com.app.medicalequipmentbiding.presentation.AdminActivity;
+import com.app.medicalequipmentbiding.presentation.AdminViewModel;
 import com.app.medicalequipmentbiding.presentation.BaseActivity;
 import com.app.medicalequipmentbiding.presentation.MainActivity;
 import com.app.medicalequipmentbiding.presentation.SplashActivity;
@@ -60,5 +63,8 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = VendorViewModelModule.class)
     abstract VendorOffersHistoryActivity contributeVendorOffersHistoryActivity();
+
+    @ContributesAndroidInjector(modules = AdminViewModelModule.class)
+    abstract AdminActivity contributeAdminActivity();
 
 }

@@ -68,6 +68,20 @@
                 app:drawableTint="@color/white" />
 
             <Button
+                android:id="@+id/admin_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/cornered_stroke_primary_bg"
+                android:onClick="onAdminLoginClicked"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:text="@string/login_as_admin"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                app:drawableTint="@color/colorPrimary" />
+
+            <Button
                 android:id="@+id/register_now"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,8 +94,6 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorPrimary"
                 app:drawableTint="@color/colorPrimary" />
-
-
 
         </LinearLayout>
 

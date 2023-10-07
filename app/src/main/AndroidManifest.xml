@@ -15,6 +15,9 @@
         android:theme="@style/FullScreenAppTheme"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.AdminActivity"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".presentation.vendor.VendorOffersHistoryActivity"
             android:screenOrientation="portrait" />
         <activity

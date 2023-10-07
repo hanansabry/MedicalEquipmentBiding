@@ -30,8 +30,12 @@ public class SplashActivity extends BaseActivity {
                     Intent intent = new Intent(this, ClientBidingListActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                } else {
+                } else if (sessionManager.getAccountType().equals(Constants.VENDOR)) {
                     Intent intent = new Intent(this, ActiveBidingListActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(this, AdminActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }

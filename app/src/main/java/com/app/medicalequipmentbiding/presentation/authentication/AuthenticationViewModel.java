@@ -2,6 +2,7 @@ package com.app.medicalequipmentbiding.presentation.authentication;
 
 import com.app.medicalequipmentbiding.R;
 import com.app.medicalequipmentbiding.data.DatabaseRepository;
+import com.app.medicalequipmentbiding.data.models.Admin;
 import com.app.medicalequipmentbiding.data.models.Client;
 import com.app.medicalequipmentbiding.data.models.Vendor;
 import com.app.medicalequipmentbiding.presentation.BaseViewModel;
@@ -18,6 +19,7 @@ public class AuthenticationViewModel extends BaseViewModel {
 
     private final MutableLiveData<Client> clientLiveData = new MutableLiveData<>();
     private final MutableLiveData<Vendor> vendorLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Admin> adminLiveData = new MutableLiveData<>();
     private final MutableLiveData<Integer> validationState = new MutableLiveData<>();
 
     @Inject
@@ -62,6 +64,29 @@ public class AuthenticationViewModel extends BaseViewModel {
                     public void onSuccess(Vendor vendor) {
                         // Emit the Employee and Farm objects to the corresponding LiveData
                         vendorLiveData.postValue(vendor);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorState.setValue(e.getMessage());
+                    }
+                });
+    }
+
+    public void loginAsAdmin(String email, String password) {
+        databaseRepository.loginAsAdmin(email, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Admin>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(Admin admin) {
+                        // Emit the Employee and Farm objects to the corresponding LiveData
+                        adminLiveData.postValue(admin);
                     }
 
                     @Override
@@ -121,6 +146,10 @@ public class AuthenticationViewModel extends BaseViewModel {
 
     public MutableLiveData<Vendor> getVendorLiveData() {
         return vendorLiveData;
+    }
+
+    public MutableLiveData<Admin> getAdminLiveData() {
+        return adminLiveData;
     }
 
     public MutableLiveData<Integer> getValidationState() {

@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.app.medicalequipmentbiding.R;
 import com.app.medicalequipmentbiding.databinding.ActivityLoginBinding;
 import com.app.medicalequipmentbiding.di.ViewModelProviderFactory;
+import com.app.medicalequipmentbiding.presentation.AdminActivity;
 import com.app.medicalequipmentbiding.presentation.BaseActivity;
 import com.app.medicalequipmentbiding.presentation.client.ClientBidingListActivity;
 import com.app.medicalequipmentbiding.presentation.vendor.ActiveBidingListActivity;
@@ -31,8 +32,10 @@ public class LoginActivity extends BaseActivity {
         loginType = getIntent().getStringExtra(Constants.LOGIN_TYPE);
         if (loginType.equals(Constants.CLIENT)) {
             binding.loginLbl.setText(R.string.login_as_client);
-        } else {
+        } else if (loginType.equals(Constants.VENDOR)) {
             binding.loginLbl.setText(R.string.login_as_vendor);
+        } else if (loginType.equals(Constants.ADMIN)) {
+            binding.loginLbl.setText(R.string.login_as_admin);
         }
 
         authenticationViewModel = new ViewModelProvider(getViewModelStore(), providerFactory).get(AuthenticationViewModel.class);
@@ -54,6 +57,17 @@ public class LoginActivity extends BaseActivity {
                 sessionManager.createLoginSession(vendor.getUserId(), vendor.getOrganization(), vendor.getEmail(), Constants.VENDOR);
             }
         });
+
+        authenticationViewModel.getAdminLiveData().observe(this, admin -> {
+            binding.progressBar.setVisibility(View.GONE);
+            binding.loginButton.setVisibility(View.VISIBLE);
+            if (admin != null) {
+                Toast.makeText(this, "Login as admin successfully", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, AdminActivity.class));
+                sessionManager.createLoginSession(admin.getAdminId(), admin.getName(), admin.getEmail(), Constants.ADMIN);
+            }
+        });
+
         authenticationViewModel.getErrorState().observe(this, error -> {
             binding.progressBar.setVisibility(View.GONE);
             binding.loginButton.setVisibility(View.VISIBLE);
@@ -80,8 +94,10 @@ public class LoginActivity extends BaseActivity {
 
         if (loginType.equals(Constants.CLIENT)) {
             authenticationViewModel.loginAsClient(email, password);
-        } else {
+        } else if (loginType.equals(Constants.VENDOR)) {
             authenticationViewModel.loginAsVendor(email, password);
+        } else {
+            authenticationViewModel.loginAsAdmin(email, password);
         }
     }
 }

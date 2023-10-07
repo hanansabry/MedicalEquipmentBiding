@@ -8,7 +8,7 @@
     <array name="rank_values">
         <item>Set Rank</item>
         <item>"1"</item>
-        <item>"2" </item>
+        <item>"2"</item>
         <item>"3"</item>
         <item>"4"</item>
         <item>"5"</item>
@@ -65,4 +65,6 @@
     <string name="equipment_list">Equipment List</string>
     <string name="order_title">Order Title</string>
     <string name="history">History</string>
+    <string name="app_earnings">App Earnings</string>
+    <string name="login_as_admin">Login As Admin</string>
 </resources>

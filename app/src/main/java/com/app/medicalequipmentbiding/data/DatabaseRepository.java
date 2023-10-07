@@ -1,5 +1,6 @@
 package com.app.medicalequipmentbiding.data;
 
+import com.app.medicalequipmentbiding.data.models.Admin;
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Client;
 import com.app.medicalequipmentbiding.data.models.MedicalType;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class DatabaseRepository {
@@ -81,5 +83,13 @@ public class DatabaseRepository {
 
     public Single<Boolean> setVendorRank(String vendorId, String offerId, int rankValue) {
         return firebaseDataSource.setVendorRank(vendorId, offerId, rankValue);
+    }
+
+    public Single<Double> retrieveTotalOrdersSales() {
+        return firebaseDataSource.retrieveTotalOrdersSales();
+    }
+
+    public Single<Admin> loginAsAdmin(String email, String password) {
+        return firebaseDataSource.loginAsAdmin(email, password);
     }
 }

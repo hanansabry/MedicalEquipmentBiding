@@ -40,4 +40,10 @@ public class MainActivity extends BaseActivity {
     public void onRegisterNowClicked(View view) {
         startActivity(new Intent(this, RegisterActivity.class));
     }
+
+    public void onAdminLoginClicked(View view) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra(Constants.LOGIN_TYPE, Constants.ADMIN);
+        startActivity(intent);
+    }
 }

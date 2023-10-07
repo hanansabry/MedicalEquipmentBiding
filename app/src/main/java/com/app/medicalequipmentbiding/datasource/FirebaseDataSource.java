@@ -1,5 +1,6 @@
 package com.app.medicalequipmentbiding.datasource;
 
+import com.app.medicalequipmentbiding.data.models.Admin;
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Client;
 import com.app.medicalequipmentbiding.data.models.EquipmentOffer;
@@ -517,6 +518,75 @@ public class FirebaseDataSource {
                         }
                     });
 
+        });
+    }
+
+    double totalValue;
+    int bidsCount;
+    public Single<Double> retrieveTotalOrdersSales() {
+        return Single.create(emitter -> {
+            firebaseDatabase.getReference(Constants.ORDERS_NODE)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            totalValue = 0;
+                            List<BidingOrder> finishedBids = new ArrayList<>();
+                            for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
+                                BidingOrder order = orderSnapshot.getValue(BidingOrder.class);
+                                if (order != null && order.getSelectedOffer() != null && !order.getSelectedOffer().isEmpty()) {
+                                    finishedBids.add(order);
+                                }
+                            }
+
+                            bidsCount = 0;
+                            for (BidingOrder order : finishedBids) {
+                                //get offer
+                                firebaseDatabase.getReference(Constants.OFFERS_NODE)
+                                        .child(order.getSelectedOffer())
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                Offer offer = snapshot.getValue(Offer.class);
+                                                if (offer != null) {
+                                                    totalValue += getTotalPrice(offer.getItemsOffers());
+                                                }
+                                                if (bidsCount == finishedBids.size() - 1) {
+                                                    emitter.onSuccess(totalValue);
+                                                }
+                                                bidsCount++;
+                                            }
+
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                emitter.onError(error.toException());
+                                            }
+                                        });
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            emitter.onError(error.toException());
+                        }
+                    });
+        });
+    }
+
+    public Single<Admin> loginAsAdmin(String email, String password) {
+        return Single.create(emitter -> {
+            firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String adminId = task.getResult().getUser().getUid();
+                            Admin admin = new Admin();
+                            admin.setAdminId(adminId);
+                            admin.setName("Admin");
+                            admin.setEmail(email);
+                            emitter.onSuccess(admin);
+                        } else {
+                            emitter.onError(task.getException());
+                        }
+                    });
         });
     }
 }
