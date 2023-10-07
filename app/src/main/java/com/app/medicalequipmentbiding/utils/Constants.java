@@ -12,4 +12,5 @@ public class Constants {
     public static final String TYPES_NODE = "types";
     public static final String ORDER_ID = "order_id";
     public static final String OFFER_ID = "offer_id";
+    public static final String OFFERS_NODE = "offers";
 }

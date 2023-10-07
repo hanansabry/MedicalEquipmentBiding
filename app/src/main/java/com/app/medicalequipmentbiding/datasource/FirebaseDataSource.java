@@ -250,63 +250,50 @@ public class FirebaseDataSource {
 
     public Single<List<Offer>> retrieveOrderOffers(String orderId) {
         return Single.create(emitter -> {
-            EquipmentOffer itemOffer1 = new EquipmentOffer();
-            itemOffer1.setItem("Item Name");
-            itemOffer1.setType("Type Name");
-            itemOffer1.setQuantity(20);
-            itemOffer1.setState(Equipment.EquipmentState.NEW.state);
-            itemOffer1.setTotalPrice(2000);
-            EquipmentOffer itemOffer2 = new EquipmentOffer();
-            itemOffer2.setItem("Item Name");
-            itemOffer2.setType("Type Name");
-            itemOffer2.setQuantity(30);
-            itemOffer2.setState(Equipment.EquipmentState.NEW.state);
-            itemOffer2.setTotalPrice(5000);
-            List<EquipmentOffer> itemOffers = new ArrayList<>();
-            itemOffers.add(itemOffer1);
-            itemOffers.add(itemOffer2);
+            Query offersQuery = firebaseDatabase.getReference(Constants.OFFERS_NODE)
+                    .orderByChild("orderId")
+                    .equalTo(orderId);
+            offersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    List<Offer> offerList = new ArrayList<>();
+                    for (DataSnapshot offerSnapshot : snapshot.getChildren()) {
+                        Offer offer = offerSnapshot.getValue(Offer.class);
+                        if (offer != null) {
+                            offer.setOfferId(offerSnapshot.getKey());
+                            offerList.add(offer);
+                        }
+                    }
+                    emitter.onSuccess(offerList);
+                }
 
-            Offer offer = new Offer();
-            offer.setVendorName("ABC Organization");
-            offer.setVendorRank(3);
-            offer.setItemsOffers(itemOffers);
-
-            Offer offer2 = new Offer();
-            offer2.setVendorName("DEFG Organization");
-            offer2.setVendorRank(2);
-            offer2.setItemsOffers(itemOffers);
-
-            List<Offer> offerList = new ArrayList<>();
-            offerList.add(offer);
-            offerList.add(offer2);
-            emitter.onSuccess(offerList);
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    emitter.onError(error.toException());
+                }
+            });
         });
     }
 
-
     public Single<Offer> retrieveOfferDetails(String offerId) {
         return Single.create(emitter -> {
-            EquipmentOffer itemOffer1 = new EquipmentOffer();
-            itemOffer1.setItem("Item Name");
-            itemOffer1.setType("Type Name");
-            itemOffer1.setQuantity(20);
-            itemOffer1.setState(Equipment.EquipmentState.NEW.state);
-            itemOffer1.setTotalPrice(2000);
-            EquipmentOffer itemOffer2 = new EquipmentOffer();
-            itemOffer2.setItem("Item Name");
-            itemOffer2.setType("Type Name");
-            itemOffer2.setQuantity(30);
-            itemOffer2.setState(Equipment.EquipmentState.NEW.state);
-            itemOffer2.setTotalPrice(5000);
-            List<EquipmentOffer> itemOffers = new ArrayList<>();
-            itemOffers.add(itemOffer1);
-            itemOffers.add(itemOffer2);
+            firebaseDatabase.getReference(Constants.OFFERS_NODE)
+                    .child(offerId)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Offer offer = snapshot.getValue(Offer.class);
+                            if (offer != null) {
+                                offer.setOfferId(snapshot.getKey());
+                                emitter.onSuccess(offer);
+                            }
+                        }
 
-            Offer offer = new Offer();
-            offer.setVendorName("ABC Organization");
-            offer.setVendorRank(3);
-            offer.setItemsOffers(itemOffers);
-            emitter.onSuccess(offer);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            emitter.onError(error.toException());
+                        }
+                    });
         });
     }
 
@@ -332,6 +319,22 @@ public class FirebaseDataSource {
                             emitter.onError(error.toException());
                         }
                     });
+        });
+    }
+
+    public Single<Boolean> saveOffer(Offer offer) {
+        return Single.create(emitter -> {
+            firebaseDatabase.getReference(Constants.OFFERS_NODE)
+                    .push()
+                    .setValue(offer)
+                    .addOnCompleteListener(saveTask -> {
+                        if (saveTask.isSuccessful()) {
+                            emitter.onSuccess(true);
+                        } else {
+                            emitter.onError(saveTask.getException());
+                        }
+                    });
+
         });
     }
 }

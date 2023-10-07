@@ -16,6 +16,7 @@ import com.app.medicalequipmentbiding.presentation.client.ClientBidingListActivi
 import com.app.medicalequipmentbiding.presentation.client.NewBidingOrderActivity;
 import com.app.medicalequipmentbiding.presentation.client.OfferDetailsActivity;
 import com.app.medicalequipmentbiding.presentation.vendor.ActiveBidingListActivity;
+import com.app.medicalequipmentbiding.presentation.vendor.OrderDetailsActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -52,5 +53,8 @@ public abstract class ActivityBuildersModule {
 
     @ContributesAndroidInjector(modules = ClientBidingViewModelModule.class)
     abstract OfferDetailsActivity contributeOfferDetailsActivity();
+
+    @ContributesAndroidInjector(modules = VendorViewModelModule.class)
+    abstract OrderDetailsActivity contributeOrderDetailsActivity();
 
 }

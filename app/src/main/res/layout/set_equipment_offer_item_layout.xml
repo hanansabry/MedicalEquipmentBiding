@@ -7,8 +7,8 @@
             name="locale"
             type="String" />
         <variable
-            name="equipmentOffer"
-            type="com.app.medicalequipmentbiding.data.models.EquipmentOffer" />
+            name="equipment"
+            type="com.app.medicalequipmentbiding.data.models.Equipment" />
     </data>
 
     <LinearLayout
@@ -21,9 +21,9 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_weight="3"
             android:gravity="center"
-            android:text='@{String.format("%1s - %2s",equipmentOffer.type, equipmentOffer.item)}'
+            android:text='@{String.format("%1s - %2s",equipment.type, equipment.item)}'
             android:textColor="@color/dark_gray"
             android:textSize="14sp"
             tools:text="Medical Type - Medical Item" />
@@ -34,29 +34,31 @@
             android:layout_gravity="center"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@{equipmentOffer.quantity + @string/emptychar}"
+            android:text="@{equipment.quantity + @string/emptychar}"
             android:textColor="@color/dark_gray"
             android:textSize="14sp"
             tools:text="1" />
 
-        <TextView
+        <EditText
+            android:id="@+id/price_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1.5"
             android:gravity="center"
-            android:text="@{equipmentOffer.totalPrice + @string/emptychar}"
+            android:hint="@string/price"
+            android:inputType="numberDecimal"
             android:textColor="@color/dark_gray"
-            android:textSize="14sp"
-            tools:text="1000 LE" />
+            android:textSize="14sp" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/state_spinner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:gravity="center"
-            android:text="@{equipmentOffer.state}"
+            android:entries="@array/item_status"
             android:textColor="@color/dark_gray"
             android:textSize="14sp"
             tools:text="2000 LE" />

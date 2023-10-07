@@ -53,4 +53,6 @@
     <string name="select_offer">Select Offer</string>
     <string name="active_biding">Active Biding</string>
     <string name="show_history">Show History</string>
+    <string name="set_your_offer">Set Your Offer</string>
+    <string name="equipment_list">Equipment List</string>
 </resources>

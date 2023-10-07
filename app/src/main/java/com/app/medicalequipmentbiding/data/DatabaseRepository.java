@@ -66,4 +66,8 @@ public class DatabaseRepository {
     public Single<List<BidingOrder>> retrieveActiveBiding() {
         return firebaseDataSource.retrieveActiveBiding();
     }
+
+    public Single<Boolean> saveOffer(Offer offer) {
+        return firebaseDataSource.saveOffer(offer);
+    }
 }

@@ -13,6 +13,7 @@ import com.app.medicalequipmentbiding.di.ViewModelProviderFactory;
 import com.app.medicalequipmentbiding.presentation.BaseActivity;
 import com.app.medicalequipmentbiding.presentation.MainActivity;
 import com.app.medicalequipmentbiding.presentation.client.BidingListAdapter;
+import com.app.medicalequipmentbiding.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 
 import javax.inject.Inject;
@@ -55,6 +56,8 @@ public class ActiveBidingListActivity extends BaseActivity implements BidingList
 
     @Override
     public void onBidingOrderClicked(BidingOrder bidingOrder) {
-
+        Intent intent = new Intent(this, OrderDetailsActivity.class);
+        intent.putExtra(Constants.ORDER_ID, bidingOrder.getOrderId());
+        startActivity(intent);
     }
 }
