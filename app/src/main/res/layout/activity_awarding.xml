@@ -185,11 +185,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/select_offer"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            android:onClick="onSelectOfferClicked"
             android:background="@drawable/cornered_primary_bg"
+            android:onClick="onSelectOfferClicked"
+            android:text="@string/select_offer"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

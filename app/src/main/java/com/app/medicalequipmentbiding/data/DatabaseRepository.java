@@ -5,13 +5,13 @@ import com.app.medicalequipmentbiding.data.models.Client;
 import com.app.medicalequipmentbiding.data.models.MedicalType;
 import com.app.medicalequipmentbiding.data.models.Offer;
 import com.app.medicalequipmentbiding.data.models.Vendor;
+import com.app.medicalequipmentbiding.data.models.VendorOfferHistory;
 import com.app.medicalequipmentbiding.datasource.FirebaseDataSource;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class DatabaseRepository {
@@ -69,5 +69,13 @@ public class DatabaseRepository {
 
     public Single<Boolean> saveOffer(Offer offer) {
         return firebaseDataSource.saveOffer(offer);
+    }
+
+    public Single<List<VendorOfferHistory>> retrieveVendorOffersHistory(String vendorId) {
+        return firebaseDataSource.retrieveVendorOffersHistory(vendorId);
+    }
+
+    public Single<Boolean> selectOffer(String orderId, String offerId) {
+        return firebaseDataSource.selectOffer(orderId, offerId);
     }
 }

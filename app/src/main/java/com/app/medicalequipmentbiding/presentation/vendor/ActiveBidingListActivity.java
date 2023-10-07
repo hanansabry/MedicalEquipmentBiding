@@ -60,4 +60,8 @@ public class ActiveBidingListActivity extends BaseActivity implements BidingList
         intent.putExtra(Constants.ORDER_ID, bidingOrder.getOrderId());
         startActivity(intent);
     }
+
+    public void onShowHistoryClicked(View view) {
+        startActivity(new Intent(this, VendorOffersHistoryActivity.class));
+    }
 }

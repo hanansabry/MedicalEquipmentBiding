@@ -3,6 +3,7 @@ package com.app.medicalequipmentbiding.presentation.vendor;
 import com.app.medicalequipmentbiding.data.DatabaseRepository;
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Offer;
+import com.app.medicalequipmentbiding.data.models.VendorOfferHistory;
 import com.app.medicalequipmentbiding.presentation.BaseViewModel;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 public class VendorViewModel extends BaseViewModel {
 
     private final MutableLiveData<List<BidingOrder>> ordersLiveData = new MutableLiveData<>();
+    private final MutableLiveData<List<VendorOfferHistory>> historyLiveData = new MutableLiveData<>();
     private final MutableLiveData<BidingOrder> bidingOrderLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> offerStateLiveData = new MutableLiveData<>();
 
@@ -92,6 +94,28 @@ public class VendorViewModel extends BaseViewModel {
                 });
     }
 
+    public void retrieveVendorOffersHistory(String vendorId) {
+        databaseRepository.retrieveVendorOffersHistory(vendorId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<List<VendorOfferHistory>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable.add(d);
+                    }
+
+                    @Override
+                    public void onSuccess(List<VendorOfferHistory> offersHistory) {
+                        historyLiveData.setValue(offersHistory);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorState.setValue(e.getMessage());
+                    }
+                });
+    }
+
     public MutableLiveData<List<BidingOrder>> getOrdersLiveData() {
         return ordersLiveData;
     }
@@ -102,5 +126,9 @@ public class VendorViewModel extends BaseViewModel {
 
     public MutableLiveData<Boolean> getOfferStateLiveData() {
         return offerStateLiveData;
+    }
+
+    public MutableLiveData<List<VendorOfferHistory>> getHistoryLiveData() {
+        return historyLiveData;
     }
 }

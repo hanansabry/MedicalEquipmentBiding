@@ -1,5 +1,6 @@
 package com.app.medicalequipmentbiding.utils;
 
+import android.view.View;
 import android.widget.TextView;
 
 import com.app.medicalequipmentbiding.R;
@@ -15,7 +16,7 @@ public class BindingAdaptersUtils {
 
     @BindingAdapter({"bind:closeDate", "bind:status"})
     public static void bindOrderStatus(TextView textView, long closeDate, String status) {
-        if (closeDate < System.currentTimeMillis()) {
+        if (closeDate < System.currentTimeMillis() || status.equals(BidingOrder.OrderStatus.CLOSED.name())) {
             textView.setText(BidingOrder.OrderStatus.CLOSED.name());
             textView.setBackgroundColor(textView.getContext().getColor(R.color.red));
         } else {

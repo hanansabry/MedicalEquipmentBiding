@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Offer;
 import com.app.medicalequipmentbiding.databinding.ActivityAwardingBinding;
 import com.app.medicalequipmentbiding.di.ViewModelProviderFactory;
@@ -23,6 +24,7 @@ public class AwardingActivity extends BaseActivity implements OrderOffersAdapter
     ViewModelProviderFactory providerFactory;
     private OrderOffersAdapter orderOffersAdapter;
     private Offer selectedOffer;
+    private String orderId;
 
     @Override
     public View getDataBindingView() {
@@ -33,13 +35,18 @@ public class AwardingActivity extends BaseActivity implements OrderOffersAdapter
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String orderId = getIntent().getStringExtra(Constants.ORDER_ID);
+        orderId = getIntent().getStringExtra(Constants.ORDER_ID);
 
         clientBidingViewModel = new ViewModelProvider(getViewModelStore(), providerFactory).get(ClientBidingViewModel.class);
         clientBidingViewModel.retrieveOrderDetails(orderId);
         clientBidingViewModel.getBidingOrderLiveData().observe(this, bidingOrder -> {
             if (bidingOrder != null) {
                 binding.setOrder(bidingOrder);
+                if (bidingOrder.getStatus().equals(BidingOrder.OrderStatus.CLOSED.name())) {
+                    binding.selectOfferButton.setVisibility(View.GONE);
+                } else {
+                    binding.selectOfferButton.setVisibility(View.VISIBLE);
+                }
                 clientBidingViewModel.retrieveOrderOffers(bidingOrder.getOrderId());
             }
         });
@@ -47,6 +54,13 @@ public class AwardingActivity extends BaseActivity implements OrderOffersAdapter
         clientBidingViewModel.getOrderOffersLiveData().observe(this, offers -> {
             orderOffersAdapter = new OrderOffersAdapter(offers, this);
             binding.offersRecyclerview.setAdapter(orderOffersAdapter);
+        });
+
+        clientBidingViewModel.getSelectOfferStateLiveData().observe(this, success -> {
+            if (success) {
+                Toast.makeText(this, "Offer is selected", Toast.LENGTH_SHORT).show();
+                finish();
+            }
         });
 
         clientBidingViewModel.getErrorState().observe(this, error -> {
@@ -68,6 +82,6 @@ public class AwardingActivity extends BaseActivity implements OrderOffersAdapter
     }
 
     public void onSelectOfferClicked(View view) {
-        //do action with selected offer
+        clientBidingViewModel.selectOffer(orderId, selectedOffer.getOfferId());
     }
 }

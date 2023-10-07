@@ -2,11 +2,11 @@ package com.app.medicalequipmentbiding.datasource;
 
 import com.app.medicalequipmentbiding.data.models.BidingOrder;
 import com.app.medicalequipmentbiding.data.models.Client;
-import com.app.medicalequipmentbiding.data.models.Equipment;
 import com.app.medicalequipmentbiding.data.models.EquipmentOffer;
 import com.app.medicalequipmentbiding.data.models.MedicalType;
 import com.app.medicalequipmentbiding.data.models.Offer;
 import com.app.medicalequipmentbiding.data.models.Vendor;
+import com.app.medicalequipmentbiding.data.models.VendorOfferHistory;
 import com.app.medicalequipmentbiding.utils.Constants;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +17,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -306,7 +307,8 @@ public class FirebaseDataSource {
                             ArrayList<BidingOrder> orders = new ArrayList<>();
                             for (DataSnapshot orderSnapshot : snapshot.getChildren()) {
                                 BidingOrder order = orderSnapshot.getValue(BidingOrder.class);
-                                if (order != null && order.getCloseDate() > System.currentTimeMillis()) {
+                                if (order != null && order.getCloseDate() > System.currentTimeMillis()
+                                        && !order.getStatus().equals(BidingOrder.OrderStatus.CLOSED.name())) {
                                     order.setOrderId(orderSnapshot.getKey());
                                     orders.add(order);
                                 }
@@ -322,11 +324,109 @@ public class FirebaseDataSource {
         });
     }
 
+    public Single<List<VendorOfferHistory>> retrieveVendorOffersHistory(String vendorId) {
+        return Single.create(emitter -> {
+            Query vendorOffersQuery = firebaseDatabase.getReference(Constants.OFFERS_NODE)
+                    .orderByChild("vendorId")
+                    .equalTo(vendorId);
+
+            vendorOffersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    List<VendorOfferHistory> historyList = new ArrayList<>();
+                    for (DataSnapshot offerSnapshot : snapshot.getChildren()) {
+                        Offer offer = offerSnapshot.getValue(Offer.class);
+                        if (offer != null) {
+                            //get order details for this offer
+                            firebaseDatabase.getReference(Constants.ORDERS_NODE)
+                                    .child(offer.getOrderId())
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            BidingOrder bidingOrder = snapshot.getValue(BidingOrder.class);
+                                            if (snapshot.hasChild("selectedOffer")) {
+                                                String winningOfferId = snapshot.child("selectedOffer").getValue().toString();
+                                                //get offer details
+                                                firebaseDatabase.getReference(Constants.OFFERS_NODE)
+                                                        .child(winningOfferId)
+                                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                Offer winningOffer = snapshot.getValue(Offer.class);
+                                                                if (winningOffer != null) {
+                                                                    VendorOfferHistory offerHistory = new VendorOfferHistory();
+                                                                    offerHistory.setOrderTitle(bidingOrder.getTitle());
+                                                                    offerHistory.setWinningVendor(winningOffer.getVendorName());
+                                                                    offerHistory.setOfferPrice(getTotalPrice(winningOffer.getItemsOffers()));
+                                                                    historyList.add(offerHistory);
+                                                                }
+                                                                emitter.onSuccess(historyList);
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError error) {
+                                                                emitter.onError(error.toException());
+                                                            }
+                                                        });
+                                            }
+//                                            else {
+//                                                //no winning for this offer yet
+//                                                VendorOfferHistory offerHistory = new VendorOfferHistory();
+//                                                offerHistory.setOrderTitle(bidingOrder.getTitle());
+//                                                offerHistory.setWinningVendor("Not available");
+//                                                historyList.add(offerHistory);
+//                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            emitter.onError(error.toException());
+                                        }
+                                    });
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    emitter.onError(error.toException());
+                }
+            });
+        });
+    }
+
+    private double getTotalPrice(List<EquipmentOffer> itemsOffers) {
+        double total = 0;
+        for (EquipmentOffer equipmentOffer : itemsOffers) {
+            total += equipmentOffer.getTotalPrice();
+        }
+        return total;
+    }
+
     public Single<Boolean> saveOffer(Offer offer) {
         return Single.create(emitter -> {
             firebaseDatabase.getReference(Constants.OFFERS_NODE)
                     .push()
                     .setValue(offer)
+                    .addOnCompleteListener(saveTask -> {
+                        if (saveTask.isSuccessful()) {
+                            emitter.onSuccess(true);
+                        } else {
+                            emitter.onError(saveTask.getException());
+                        }
+                    });
+
+        });
+    }
+
+    public Single<Boolean> selectOffer(String orderId, String offerId) {
+        return Single.create(emitter -> {
+            HashMap<String, Object> updateValues = new HashMap<>();
+            updateValues.put("selectedOffer", offerId);
+            updateValues.put("status", BidingOrder.OrderStatus.CLOSED.name());
+            firebaseDatabase.getReference(Constants.ORDERS_NODE)
+                    .child(orderId)
+                    .updateChildren(updateValues)
                     .addOnCompleteListener(saveTask -> {
                         if (saveTask.isSuccessful()) {
                             emitter.onSuccess(true);

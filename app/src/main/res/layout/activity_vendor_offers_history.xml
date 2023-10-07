@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.vendor.ActiveBidingListActivity">
+        tools:context=".presentation.vendor.VendorOffersHistoryActivity">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -42,48 +42,26 @@
                     android:layout_gravity="center"
                     android:textColor="@color/black_2"
                     android:textSize="20sp"
-                    android:text="@string/active_biding"
-                    android:textFontWeight="700"/>
-
-                <ImageButton
-                    android:id="@+id/logout_button"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="end"
-                    android:layout_margin="8dp"
-                    android:background="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_logout"
-                    android:onClick="onLogoutClicked" />
+                    android:text="@string/history"
+                    android:textFontWeight="700"
+                    tools:text="History"/>
 
             </androidx.appcompat.widget.Toolbar>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/biding_list_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:clipToPadding="false"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="64dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-            tools:listitem="@layout/biding_order_item_layout" />
-
-        <Button
+            android:id="@+id/offers_history_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/cornered_primary_bg"
-            android:textColor="@color/white"
-            android:text="@string/show_history"
-            android:textAllCaps="false"
-            android:onClick="onShowHistoryClicked"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:clipToPadding="false"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+            tools:listitem="@layout/vendor_offer_history_item_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
