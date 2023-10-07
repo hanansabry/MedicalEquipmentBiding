@@ -276,10 +276,12 @@ public class FirebaseDataSource {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         Vendor vendor = snapshot.getValue(Vendor.class);
-                                        offer.setVendorRank(vendor.getRank());
-                                        offerListWithVendors.add(offer);
-                                        if (offerListWithVendors.size() == offerList.size()) {
-                                            emitter.onSuccess(offerListWithVendors);
+                                        if (vendor != null) {
+                                            offer.setVendorRank(vendor.getRank());
+                                            offerListWithVendors.add(offer);
+                                            if (offerListWithVendors.size() == offerList.size()) {
+                                                emitter.onSuccess(offerListWithVendors);
+                                            }
                                         }
                                     }
 
@@ -316,8 +318,10 @@ public class FirebaseDataSource {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 Vendor vendor = snapshot.getValue(Vendor.class);
-                                                offer.setVendorRank(vendor.getRank());
-                                                emitter.onSuccess(offer);
+                                                if (vendor != null) {
+                                                    offer.setVendorRank(vendor.getRank());
+                                                    emitter.onSuccess(offer);
+                                                }
                                             }
 
                                             @Override

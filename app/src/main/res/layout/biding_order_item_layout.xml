@@ -40,13 +40,14 @@
 
             <TextView
                 android:id="@+id/title"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="@{order.title}"
                 android:textFontWeight="700"
                 android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@id/order_icon"
+                app:layout_constraintEnd_toStartOf="@id/order_status"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Order title" />
 
@@ -62,6 +63,7 @@
                 tools:text="From 10 aug,2023 to 20 aug, 2023"/>
 
             <TextView
+                android:id="@+id/order_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"

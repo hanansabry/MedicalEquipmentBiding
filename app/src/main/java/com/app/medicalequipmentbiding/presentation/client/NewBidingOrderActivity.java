@@ -105,6 +105,8 @@ public class NewBidingOrderActivity extends BaseActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position > 0) {
                     MedicalType selectedType = medicalTypes.get(position - 1);
+                    itemsAdapter.clear();
+                    itemsAdapter.add(getString(R.string.select_item));
                     itemsAdapter.addAll(selectedType.getItems());
                     equipmentItemLayoutBinding.equipmentItemSpinner.setAdapter(itemsAdapter);
                 }
