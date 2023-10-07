@@ -254,7 +254,7 @@ public class FirebaseDataSource {
             Query offersQuery = firebaseDatabase.getReference(Constants.OFFERS_NODE)
                     .orderByChild("orderId")
                     .equalTo(orderId);
-            offersQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            offersQuery.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     List<Offer> offerList = new ArrayList<>();
@@ -432,6 +432,46 @@ public class FirebaseDataSource {
                             emitter.onSuccess(true);
                         } else {
                             emitter.onError(saveTask.getException());
+                        }
+                    });
+
+        });
+    }
+
+    public Single<Boolean> setVendorRank(String vendorId, String offerId, int rankValue) {
+        return Single.create(emitter -> {
+            //firstly get current count and rank
+            firebaseDatabase.getReference(Constants.VENDORS_NODE)
+                    .child(vendorId)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Vendor vendor = snapshot.getValue(Vendor.class);
+                            if (vendor != null) {
+                                int count = vendor.getRankCount() + 1;
+                                double rank = (vendor.getRank() + rankValue) / count;
+                                HashMap<String, Object> updateValues = new HashMap<>();
+                                updateValues.put("rank", rank);
+                                updateValues.put("rankCount", count);
+
+                                //update values
+                                firebaseDatabase.getReference(Constants.VENDORS_NODE)
+                                        .child(vendorId)
+                                        .updateChildren(updateValues)
+                                        .addOnCompleteListener(task -> {
+                                            emitter.onSuccess(task.isSuccessful());
+                                        });
+
+                                firebaseDatabase.getReference(Constants.OFFERS_NODE)
+                                        .child(offerId)
+                                        .child("vendorRank")
+                                        .setValue(rank);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            emitter.onError(error.toException());
                         }
                     });
 

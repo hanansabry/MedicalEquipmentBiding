@@ -78,4 +78,8 @@ public class DatabaseRepository {
     public Single<Boolean> selectOffer(String orderId, String offerId) {
         return firebaseDataSource.selectOffer(orderId, offerId);
     }
+
+    public Single<Boolean> setVendorRank(String vendorId, String offerId, int rankValue) {
+        return firebaseDataSource.setVendorRank(vendorId, offerId, rankValue);
+    }
 }

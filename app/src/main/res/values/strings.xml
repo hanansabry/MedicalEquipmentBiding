@@ -5,6 +5,14 @@
         <item>Like New</item>
         <item>Used</item>
     </array>
+    <array name="rank_values">
+        <item>Set Rank</item>
+        <item>"1"</item>
+        <item>"2" </item>
+        <item>"3"</item>
+        <item>"4"</item>
+        <item>"5"</item>
+    </array>
     <string name="app_name">MedicalEquipmentBiding</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>

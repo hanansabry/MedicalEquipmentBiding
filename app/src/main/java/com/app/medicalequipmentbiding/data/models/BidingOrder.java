@@ -12,6 +12,7 @@ public class BidingOrder {
     private long closeDate;
     private boolean isDelivery;
     private String status;
+    private String selectedOffer;
     private List<Equipment> orderItems;
 
     public String getOrderId() {
@@ -68,6 +69,14 @@ public class BidingOrder {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getSelectedOffer() {
+        return selectedOffer;
+    }
+
+    public void setSelectedOffer(String selectedOffer) {
+        this.selectedOffer = selectedOffer;
     }
 
     public List<Equipment> getOrderItems() {

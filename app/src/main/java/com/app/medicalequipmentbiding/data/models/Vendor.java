@@ -10,6 +10,7 @@ public class Vendor {
     private String approveNum;
     private String address;
     private double rank;
+    private int rankCount;
 
     public String getUserId() {
         return userId;
@@ -73,5 +74,13 @@ public class Vendor {
 
     public void setRank(double rank) {
         this.rank = rank;
+    }
+
+    public int getRankCount() {
+        return rankCount;
+    }
+
+    public void setRankCount(int rankCount) {
+        this.rankCount = rankCount;
     }
 }

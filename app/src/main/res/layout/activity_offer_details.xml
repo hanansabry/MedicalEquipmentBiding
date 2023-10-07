@@ -98,7 +98,7 @@
                 android:gravity="end"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"
-                android:text='@{String.format("Rank: %1$s", offer.vendorRank)}'
+                android:text='@{String.format("Rank: %.2f", offer.vendorRank)}'
                 android:textColor="@color/white"
                 tools:text="Rank: 5.0" />
         </RelativeLayout>
